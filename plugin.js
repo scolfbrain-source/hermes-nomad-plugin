@@ -31,7 +31,6 @@ function NomadPage() {
   const t = usePluginI18n(ID)
   const [status, check] = useOnline()
   const [frameFailed, setFrameFailed] = useState(false)
-  const [showFrame, setShowFrame] = useState(false)
   const [frameKey, setFrameKey] = useState(0)
 
   const openExternal = () => {
