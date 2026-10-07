@@ -4,7 +4,7 @@
  * (SandboxedFrame) y escape a navegador externo. Escape necesario porque NOMAD
  * manda X-Frame-Options: DENY; si el frame guest lo bloquea, onError lo muestra.
  */
-import { cn, haptic, host, SandboxedFrame, StatusDot, Button, usePluginI18n, ROUTES_AREA, SIDEBAR_NAV_AREA, PALETTE_AREA } from '@hermes/plugin-sdk'
+import { cn, haptic, host, StatusDot, Button, usePluginI18n, ROUTES_AREA, SIDEBAR_NAV_AREA, PALETTE_AREA } from '@hermes/plugin-sdk'
 import { jsx, jsxs } from 'react/jsx-runtime'
 import { useState, useEffect, useCallback } from 'react'
 
@@ -83,11 +83,11 @@ function NomadPage() {
           ]})
         ]
       }),
-      showFrame && jsx(SandboxedFrame, {
+      showFrame && jsx('iframe', {
         key: frameKey,
         src: BASE,
         title: 'Project NOMAD Command Center',
-        className: 'min-h-0 flex-[3] border-t border-(--ui-border)',
+        className: 'min-h-0 flex-[3] w-full border-t border-(--ui-border) bg-white',
         onError: () => setFrameFailed(true)
       })
     ]
