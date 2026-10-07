@@ -31,6 +31,7 @@ function NomadPage() {
   const t = usePluginI18n(ID)
   const [status, check] = useOnline()
   const [frameFailed, setFrameFailed] = useState(false)
+  const [showFrame, setShowFrame] = useState(false)
   const [frameKey, setFrameKey] = useState(0)
 
   const openExternal = () => {
@@ -67,28 +68,28 @@ function NomadPage() {
           jsx(Button, { variant: 'outline', size: 'sm', onClick: openExternal, children: t('openBrowser') })
         ]
       }),
-      status === 'online' && !frameFailed
-        ? jsx(SandboxedFrame, {
-            key: frameKey,
-            src: BASE,
-            title: 'Project NOMAD Command Center',
-            className: 'min-h-0 flex-1',
-            onError: () => setFrameFailed(true)
-          })
-        : jsxs('div', {
-            className: 'flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center',
-            children: [
-              jsx('div', {
-                className: 'text-sm text-(--ui-text-secondary)',
-                children: status === 'offline' ? t('offline') : t('embedBlocked')
-              }),
-              jsx('div', { className: 'text-xs text-(--ui-text-tertiary)', children: BASE }),
-              jsxs('div', { className: 'flex gap-2', children: [
-                jsx(Button, { variant: 'outline', size: 'sm', onClick: () => { setFrameFailed(false); check() }, children: t('retry') }),
-                jsx(Button, { variant: 'default', size: 'sm', onClick: openExternal, children: t('openBrowser') })
-              ]})
-            ]
-          })
+      jsxs('div', {
+        className: 'flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center',
+        children: [
+          jsx('div', {
+            className: 'text-sm text-(--ui-text-secondary)',
+            children: status === 'offline' ? t('offline') : t('embedNote')
+          }),
+          jsx('div', { className: 'text-xs text-(--ui-text-tertiary)', children: BASE }),
+          jsxs('div', { className: 'flex gap-2', children: [
+            jsx(Button, { variant: 'default', size: 'sm', onClick: openExternal, children: t('openNomad') }),
+            jsx(Button, { variant: 'outline', size: 'sm', onClick: () => { setFrameFailed(false); check() }, children: t('retry') }),
+            jsx(Button, { variant: 'ghost', size: 'sm', onClick: () => setShowFrame(v => !v), children: showFrame ? t('hideEmbed') : t('showEmbed') })
+          ]})
+        ]
+      }),
+      showFrame && jsx(SandboxedFrame, {
+        key: frameKey,
+        src: BASE,
+        title: 'Project NOMAD Command Center',
+        className: 'min-h-0 flex-[3] border-t border-(--ui-border)',
+        onError: () => setFrameFailed(true)
+      })
     ]
   })
 }
@@ -102,7 +103,7 @@ export default {
     ctx.i18n.register({
       es: {
         status: s => s === 'online' ? 'NOMAD conectado' : s === 'checking' ? 'Comprobando NOMAD…' : 'NOMAD sin conexión',
-        openBrowser: 'Abrir en navegador',
+        openNomad: 'Abrir NOMAD', hideEmbed: 'Ocultar embebido', showEmbed: 'Vista embebida', embedNote: 'El Command Center se abre en tu navegador (la vista embebida queda limitada por la seguridad del sandbox).', openBrowser: 'Abrir en navegador',
         refresh: 'Recargar',
         offline: 'NOMAD no responde en sbrain.',
         embedBlocked: 'NOMAD bloquea el embebido (X-Frame-Options). Ábrelo en el navegador.',
@@ -110,7 +111,7 @@ export default {
       },
       en: {
         status: s => s === 'online' ? 'NOMAD online' : s === 'checking' ? 'Checking NOMAD…' : 'NOMAD offline',
-        openBrowser: 'Open in browser',
+        openNomad: 'Abrir NOMAD', hideEmbed: 'Ocultar embebido', showEmbed: 'Vista embebida', embedNote: 'El Command Center se abre en tu navegador (la vista embebida queda limitada por la seguridad del sandbox).', openBrowser: 'Open in browser',
         refresh: 'Reload',
         offline: 'NOMAD is not responding on sbrain.',
         embedBlocked: 'NOMAD blocks embedding (X-Frame-Options). Open it in your browser.',
