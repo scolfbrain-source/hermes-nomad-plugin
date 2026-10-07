@@ -110,7 +110,7 @@ export default {
       },
       en: {
         status: s => s === 'online' ? 'NOMAD online' : s === 'checking' ? 'Checking NOMAD…' : 'NOMAD offline',
-        openNomad: 'Abrir NOMAD', hideEmbed: 'Ocultar embebido', showEmbed: 'Vista embebida', embedNote: 'El Command Center se abre en tu navegador (la vista embebida queda limitada por la seguridad del sandbox).', openBrowser: 'Open in browser',
+        openNomad: 'Abrir NOMAD', openBrowser: 'Open in browser',
         refresh: 'Reload',
         offline: 'NOMAD is not responding on sbrain.',
         embedBlocked: 'NOMAD blocks embedding (X-Frame-Options). Open it in your browser.',
